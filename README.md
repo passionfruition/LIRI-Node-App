@@ -29,7 +29,7 @@ Possible information returned about:
 7. Depending on which command you chose, the console will return the relative information.
 
 # Example
-![ezgif com-video-to-gif](https://user-images.githubusercontent.com/26778117/66092895-c5c2f000-e542-11e9-80d8-3bba273fa9f7.gif)
+![ezgif com-video-to-gif](https://user-images.githubusercontent.com/26778117/66098540-c0bc6b80-e557-11e9-805c-ddee95faf3c1.gif)
 
 # Authors
 [Madeleine Prak](https://github.com/madeleineprak/)
