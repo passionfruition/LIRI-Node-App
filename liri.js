@@ -4,27 +4,18 @@ var keys = require("./keys.js");
 var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
 var axios = require("axios");
-var nodeArgs = process.argv;
 var fs = require("fs");
-var userCommand = process.argv[2];
-var userInput = "";
 
-// Puts together user input string to use in function
-for (var i = 3; i < nodeArgs.length; i++) {
-    if (i > 3 && i < nodeArgs.length && userCommand === "concert-this" || i > 3 && i < nodeArgs.length && userCommand === "movie-this") {
-        userInput = userInput + "+" + nodeArgs[i];
-    } else if (i > 3 && i < nodeArgs.length && userCommand === "spotify-this-song") {
-        userInput = userInput + " " + nodeArgs[i];
-    } else {
-        userInput += nodeArgs[i];
-    }
-}
+// Registers user inputs
+var userCommand = process.argv[2];
+var userInput = process.argv.slice(3).join(" ");
+
 
 // Renders when "concert-this" command is called to get the BandsInTown API
-function getBand() {
+function getBand(input) {
     // If no user input
-    if(!userInput) {
-        userInput = "Slander";
+    if(!input) {
+        input = "Slander";
     }
     var queryUrl = "https://rest.bandsintown.com/artists/" + userInput + "/events?app_id=codingbootcamp";
     axios.get(queryUrl).then(
@@ -57,10 +48,10 @@ function getBand() {
 }
 
 // Renders when "spotify-this-song" command is called to get the Spotify API
-function getSpotify() {
+function getSpotify(input) {
     // If no user input
-    if(!userInput) {
-        userInput = "The Sign by Ace of Base";
+    if(!input) {
+        input = "The Sign by Ace of Base";
     }
     spotify
         .search({ type: 'track', query: userInput, limit: 1})
@@ -97,9 +88,9 @@ function getSpotify() {
 }
 
 // Renders when "movie-this" command is called to get the OMDb API
-function getMovie() {
-    if(!userInput) {
-        userInput = "Mr. Nobody";
+function getMovie(input) {
+    if(!input) {
+        input = "Mr. Nobody";
     }
     var queryUrl = "http://www.omdbapi.com/?t=" + userInput + "&y=&plot=short&apikey=trilogy";
     axios.get(queryUrl).then(
@@ -153,21 +144,20 @@ function getMovie() {
 }
 
 // Chooses which function to run based on user input command
-function runLiri() {
-    if (userCommand === "concert-this") {
-        getBand();
-    }
-    
-    if(userCommand === "spotify-this-song") {
-        getSpotify();
-    }
-    
-    if(userCommand === "movie-this") {
-        getMovie();
-    }
-    
-    if(userCommand === "do-what-it-says") {
-        Random();
+function runLiri(input) {
+    switch (userCommand) {
+        case "concert-this": 
+            getBand(input);
+            break;
+        case "spotify-this-song":
+            getSpotify(input);
+            break;
+        case "movie-this":
+            getMovie(input);
+            break;
+        case "do-what-it-says": 
+            Random();
+            break;
     }
 }
 
@@ -180,9 +170,9 @@ function Random() {
         var randomArray = data.split(",");
         userCommand = randomArray[0];
         userInput = randomArray[1];
-        runLiri();
+        runLiri(userInput);
     })
 }
 
-runLiri();
+runLiri(userInput);
 
