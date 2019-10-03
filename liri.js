@@ -21,8 +21,8 @@ function getBand(input) {
     axios.get(queryUrl).then(
         function (response) {
             var events = response.data;
-            console.log("UPCOMING EVENTS");
-            console.log("==================");
+            console.log("Upcoming Events");
+            console.log("===================");
 
             // Only returns first 5 events
             for (i = 0; i < 5; i++) {
@@ -33,10 +33,16 @@ function getBand(input) {
                 var convertedTime = moment(time, 'YYYY-MM-DD');
                 convertedTime = convertedTime.format('MM/DD/YYYY');
 
-                console.log("Venue: " + venue);
-                console.log("Location: " + location);
-                console.log("Date: " + convertedTime);
-                console.log(" ");
+                // Store response data in an array 
+                var dataArray = [
+                    "Venue: " + venue,
+                    "Location: " + location,
+                    "Date: " + convertedTime
+                ].join("\n\n");
+
+                fs.appendFileSync("log.txt", dataArray, "utf8");
+                console.log(dataArray);
+                console.log("===================");
             }
         }
     ).catch(function (error) {
@@ -69,6 +75,7 @@ function getSpotify(input) {
                 "Album: " + song.album.name
             ].join("\n\n");
 
+            fs.appendFileSync("log.txt", dataArray, "utf8");
             console.log(dataArray);
         })
         .catch(function (err) {
@@ -98,6 +105,7 @@ function getMovie(input) {
                 "Actors: " + movie.Actors
             ].join("\n\n");
 
+            fs.appendFileSync("log.txt", dataArray, "utf8");
             console.log(dataArray);
         })
         .catch(function (error) {
