@@ -2,10 +2,10 @@
 
 LIRI is like iPhone's SIRI. However, while SIRI is a Speech Interpretation and Recognition Interface, LIRI is a _Language_ Interpretation and Recognition Interface. LIRI is a command line node app that takes in parameters and gives you back data.
 
-Type of Data that can be returned
-* Concert Information
-* Spotify 
-* Omdb movies
+Possible information returned about:
+* Concerts
+* Spotify songs
+* OMDb movies
 
 # APIs
 * [Bands In Town](https://artists.bandsintown.com/support/bandsintown-api)
@@ -26,5 +26,8 @@ Type of Data that can be returned
 6. Run the file with node. (Ex. "node liri.js concert-this Jonas Brothers). 
 7. Depending on which command you chose, the console will return the relative information.
 
-# Role
-I am the sole creator of this app.
+# Example
+![ezgif com-video-to-gif](https://user-images.githubusercontent.com/26778117/66092895-c5c2f000-e542-11e9-80d8-3bba273fa9f7.gif)
+
+# Authors
+[Madeleine Prak](https://github.com/madeleineprak/)

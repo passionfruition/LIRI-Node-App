@@ -9,6 +9,7 @@ var fs = require("fs");
 var userCommand = process.argv[2];
 var userInput = "";
 
+// Puts together user input string to use in function
 for (var i = 3; i < nodeArgs.length; i++) {
     if (i > 3 && i < nodeArgs.length && userCommand === "concert-this" || i > 3 && i < nodeArgs.length && userCommand === "movie-this") {
         userInput = userInput + "+" + nodeArgs[i];
@@ -19,20 +20,23 @@ for (var i = 3; i < nodeArgs.length; i++) {
     }
 }
 
-// console.log(userInput);
-// console.log(queryUrl);
-
+// Renders when "concert-this" command is called to get the BandsInTown API
 function getBand() {
+    // If no user input
+    if(!userInput) {
+        userInput = "Slander";
+    }
     var queryUrl = "https://rest.bandsintown.com/artists/" + userInput + "/events?app_id=codingbootcamp";
     axios.get(queryUrl).then(
         function(response) {
-            // console.log(response.data[0].venue.name);
-            // console.log(response.data.length);
             var events = response.data;
             
             console.log("UPCOMING EVENTS");
             console.log("==================");
+            // Returns all given events
             // for (i=0; i<events.length; i++) {
+
+            // Only returns first 5 events
             for (i=0; i<5; i++) {
                 var venue = events[i].venue.name;
                 var location = events[i].venue.city + ", " + events[i].venue.country;
@@ -46,18 +50,17 @@ function getBand() {
                 console.log("Date: " + convertedTime);
                 console.log(" ");
             }
-            // var venues = [];
-            // var locations = [];
-            // var
         }
     ).catch(function(error) {
         console.log(error);
     });
 }
 
+// Renders when "spotify-this-song" command is called to get the Spotify API
 function getSpotify() {
-    if(process.argv[3] = undefined) {
-        userInput = "The Sign";
+    // If no user input
+    if(!userInput) {
+        userInput = "The Sign by Ace of Base";
     }
     spotify
         .search({ type: 'track', query: userInput, limit: 1})
@@ -93,41 +96,51 @@ function getSpotify() {
         });
 }
 
+// Renders when "movie-this" command is called to get the OMDb API
 function getMovie() {
+    if(!userInput) {
+        userInput = "Mr. Nobody";
+    }
     var queryUrl = "http://www.omdbapi.com/?t=" + userInput + "&y=&plot=short&apikey=trilogy";
     axios.get(queryUrl).then(
         function(response) {
-        //   console.log("Release Year: " + response.data.Year);
         var movie = response.data;
 
         console.log("NAME");
         console.log("=============");
         console.log(movie.Title);
         console.log(" ");
+
         console.log("YEAR RELEASED");
         console.log("=============");
         console.log(movie.Year);
         console.log(" ");
+
         console.log("IMDB RATING");
         console.log("=============");
         console.log(movie.imdbRating);
         console.log(" ");
+
         console.log("ROTTEN TOMATOES RATING");
         console.log("=============");
         console.log(movie.Ratings[1].Value);
         console.log(" ");
+
         console.log("COUNTRY PRODUCED");
         console.log("=============");
         console.log(movie.Country);
         console.log(" ");
+
         console.log("LANGUAGE");
         console.log("=============");
         console.log(movie.Language);
         console.log(" ");
+
         console.log("PLOT");
         console.log("=============");
         console.log(movie.Plot);
         console.log(" ");
+
         console.log("ACTORS");
         console.log("=============");
         console.log(movie.Actors);
@@ -139,6 +152,7 @@ function getMovie() {
         });
 }
 
+// Chooses which function to run based on user input command
 function runLiri() {
     if (userCommand === "concert-this") {
         getBand();
@@ -157,16 +171,15 @@ function runLiri() {
     }
 }
 
+// Renders when "do-what-it-says" command is run and reads the random.txt file
 function Random() {
     fs.readFile("random.txt", "utf8", function(error, data) {
-        if(error) {
+        if (error) {
             return console.log(error);
         }
         var randomArray = data.split(",");
         userCommand = randomArray[0];
         userInput = randomArray[1];
-        // console.log(userCommand);
-        // console.log(userInput);
         runLiri();
     })
 }
